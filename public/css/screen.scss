@@ -1,0 +1,13 @@
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+body {
+    background: #333333;
+    color: white;
+}
+
+.l-header {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 40px;
+}
