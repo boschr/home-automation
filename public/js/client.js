@@ -9,10 +9,23 @@ var io = require( "socket.io/node_modules/socket.io-client" );
 
     var socket = io();
 
-    $( "[data-type='hue']" ).on( "change", function( event ) {
-        event.preventDefault();
+    var hue_range       = document.querySelectorAll('.hue__input--range'),
+        hue_checkbox    = document.querySelectorAll('.hue__input--checkbox')
 
-        var $form = $( this );
+    for (var i = 0; i < hue_range.length; i++) {
+        hue_range[i].addEventListener('input', function(){
+            setHue();
+        })
+    }
+
+    for (var i = 0; i < hue_checkbox.length; i++) {
+        hue_checkbox[i].addEventListener('change', function(){
+            setHue();
+        })
+    }
+
+    function setHue() {
+        $form = $('#hue__form');
         var lightId = $form.attr( "data-target" );
 
         var message = {
@@ -26,6 +39,6 @@ var io = require( "socket.io/node_modules/socket.io-client" );
         };
 
         socket.emit( "update-hue", message );
-    } );
+    }
 
 } )( require( "jquery" ) );
