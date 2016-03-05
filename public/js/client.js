@@ -1,6 +1,3 @@
-// CSS
-require( "../css/screen.scss" );
-
 // JS
 // todo: is dit DE manier??
 var io = require( "socket.io/node_modules/socket.io-client" );
