@@ -11,7 +11,7 @@ const request = require('request');
 const http = require('http').createServer( app );
 const io = require('socket.io').listen( http );
 
-app.set('views', './public/view');
+app.set('views', './dist');
 app.set('view engine', 'hbs');
 
 // Define static folder, for asset include
@@ -27,7 +27,7 @@ app.use(
     )
 );
 
-hbs.registerPartials( __dirname + '/public/view/_partial');
+hbs.registerPartials( __dirname + '/dist/_partial');
 
 var server = http.listen(8081, function(){
     var host = server.address().address;
@@ -37,5 +37,7 @@ var server = http.listen(8081, function(){
 });
 
 const hue = require('./routes/hue');
+const zwave = require('./routes/zwave');
 
 app.get('/', hue);
+app.get('/zwave', zwave);

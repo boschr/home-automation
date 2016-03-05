@@ -1,6 +1,4 @@
-// JS
-// todo: is dit DE manier??
-var io = require( "socket.io/node_modules/socket.io-client" );
+const io = require('socket.io-client');
 
 ( function( $ ) {
 
@@ -23,5 +21,17 @@ var io = require( "socket.io/node_modules/socket.io-client" );
 
         socket.emit( "update-hue", message );
     } );
+
+
+
+    // -- Zwave
+
+    $( ".js-refresh" ).on("click", function () {
+        socket.emit( "update-zwave-list" );
+    });
+
+    socket.on('node-collection', function(nodeCollection) {
+        console.log('Node list recieved: ', nodeCollection);
+    });
 
 } )( require( "jquery" ) );
