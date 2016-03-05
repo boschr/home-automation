@@ -1,37 +1,35 @@
 const io = require('socket.io-client');
+const jQuery = require('jquery');
 
-( function( $ ) {
+(($) => {
+  const socket = io();
 
-    var socket = io();
+  $('[data-type="hue"]').on('change', (event) => {
+    event.preventDefault();
 
-    $( "[data-type='hue']" ).on( "change", function( event ) {
-        event.preventDefault();
+    const $form = $(this);
+    const lightId = $form.attr('data-target');
 
-        var $form = $( this );
-        var lightId = $form.attr( "data-target" );
+    const message = {
+      lightId,
+      hueBody: {
+        on: $('[name="on"]', $form).is(':checked'),
+        hex: $('[name="hex"]', $form).val(),
+        bri: parseInt($('[name="bri"]', $form).val(), 10),
+      },
+    };
 
-        var message = {
-            lightId: lightId,
-            hueBody: {
-                on:   $( "[name='on']", $form ).is( ":checked" ),
-                hex:  $( "[name='hex']", $form ).val(),
-                bri:  parseInt( $( "[name='bri']", $form ).val(), 10 )
-            }
-        };
-
-        socket.emit( "update-hue", message );
-    } );
-
+    socket.emit('update-hue', message);
+  });
 
 
-    // -- Zwave
+  // -- Zwave
 
-    $( ".js-refresh" ).on("click", function () {
-        socket.emit( "update-zwave-list" );
-    });
+  $('.js-refresh').on('click', () => {
+    socket.emit('update-zwave-list');
+  });
 
-    socket.on('node-collection', function(nodeCollection) {
-        console.log('Node list recieved: ', nodeCollection);
-    });
-
-} )( require( "jquery" ) );
+  socket.on('node-collection', (nodeCollection) => {
+    console.log('Node list recieved: ', nodeCollection);
+  });
+})(jQuery);
