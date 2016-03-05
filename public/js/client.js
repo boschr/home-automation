@@ -19,9 +19,8 @@ var io = require( "socket.io/node_modules/socket.io-client" );
             lightId: lightId,
             hueBody: {
                 on:   $( "[name='on']", $form ).is( ":checked" ),
-                hue:  parseInt( $( "[name='hue']", $form ).val(), 10 ),
-                bri:  parseInt( $( "[name='bri']", $form ).val(), 10 ),
-                sat:  parseInt( $( "[name='sat']", $form ).val(), 10 )
+                hex:  $( "[name='hex']", $form ).val(),
+                bri:  parseInt( $( "[name='bri']", $form ).val(), 10 )
             }
         };
 

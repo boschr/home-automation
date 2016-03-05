@@ -5,18 +5,19 @@
         <input type="checkbox" name="on" id="inp_state-on" {{#if state.on}} checked="checked" {{/if}} />
     </div>
 
-    <div class="form-group">
-        <label for="inp_state-hue">Hue</label>
-        <input type="range" min="0" max="65535" value="{{state.hue}}" step="10" name="hue" id="inp_state-hue" />
-    </div>
+    {{# if state.hex }}
+        {{!-- Hue color --}}
 
-    <div class="form-group">
-        <label for="inp_state-bri">Bri</label>
-        <input type="range" min="0" max="254" value="{{state.bri}}" step="1" name="bri" id="inp_state-bri" />
-    </div>
+        <div class="form-group">
+            <label for="inp_state-hex">Color</label>
+            <input type="color" name="hex" value="{{state.hex}}" id="inp_state-hex" />
+        </div>
+    {{ else }}
+        {{!-- Hue wit --}}
 
-    <div class="form-group">
-        <label for="inp_state-sat">Sat</label>
-        <input type="range" min="0" max="254" value="{{state.sat}}" step="1" name="sat" id="inp_state-sat" />
-    </div>
+        <div class="form-group">
+            <label for="inp_state-bri">Brightness</label>
+            <input type="range" min="0" max="254" value="{{state.bri}}" step="1" name="bri" id="inp_state-bri" />
+        </div>
+    {{/ if }}
 </form>
