@@ -13,9 +13,6 @@ indent_size = 4
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{html,twig,css,less,scss,js}]
-indent_size = 4
-
 [*.coffee]
 indent_size = 2
 
