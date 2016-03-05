@@ -1,6 +1,7 @@
 require('dotenv').load();
 
 const OZW = require('openzwave-shared');
+const eventService = require('../controller/service/event');
 
 const Zwave = (req, res, io) => {
   const zwave = new OZW({
@@ -32,7 +33,7 @@ const Zwave = (req, res, io) => {
     });
   });
 
-  io.on('connection', (socket) => {
+  eventService.on('connection', (socket) => {
     socket.on('update-zwave-list', (message) => {
       console.log('UPDATE LIST !!!!!!1');
     });

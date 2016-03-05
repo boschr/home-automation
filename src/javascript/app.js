@@ -4,14 +4,14 @@ const jQuery = require('jquery');
 (($) => {
   const socket = io();
 
-  $('[data-type="hue"]').on('change', (event) => {
+  $('[data-type="hue"]').on('change', function(event) {
     event.preventDefault();
 
     const $form = $(this);
-    const lightId = $form.attr('data-target');
+    const lightId = $form.data('target');
 
     const message = {
-      lightId,
+      lightId: lightId,
       hueBody: {
         on: $('[name="on"]', $form).is(':checked'),
         hex: $('[name="hex"]', $form).val(),
@@ -19,7 +19,7 @@ const jQuery = require('jquery');
       },
     };
 
-    socket.emit('update-hue', message);
+    socket.emit('hue.update', message);
   });
 
 

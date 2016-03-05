@@ -1,62 +1,63 @@
-const request = require( "request" );
-const color = require( "color" );
+require('dotenv').load();
 
-const Hue = (req, res) => {
-
-    getLamps((lightCollection) => {
-        res.render( "index", {
-            title: "Hue lampen",
-            lampCollection: lightCollection
-        } );
-    } );
-
-};
+const request = require('request');
+const color = require('color');
+const eventService = require('../controller/service/event');
 
 const getLamps = (callback) => {
-    const options = {
-        url: "http://" + process.env.HUE_HOST + "/api/" + process.env.HUE_USER + "/lights",
-        port: 80,
-        method: "GET"
-    };
+  const requestOptions = {
+    url: 'http://' + process.env.HUE_HOST + '/api/' + process.env.HUE_USER + '/lights',
+    port: 80,
+    method: 'GET',
+  };
 
-    return request( options, ( error, response, lightCollection ) => {
-        var parsedJson = JSON.parse( lightCollection );
+  return request(requestOptions, (error, response, lightCollection) => {
+    const parsedJson = JSON.parse(lightCollection);
 
-        for( var key in parsedJson ) {
-            var hue = parsedJson[key].state.hue / 182;
-            var col = color().hsv(hue, parsedJson[key].state.sat, parsedJson[key].state.bri);
+    for (const key in parsedJson) {
+      if (parsedJson.hasOwnProperty(key)) {
+        const hue = parsedJson[key].state.hue / 182;
+        const col = color().hsv(hue, parsedJson[key].state.sat, parsedJson[key].state.bri);
 
-            parsedJson[key].state['hex'] = col.hexString();
-        }
+        parsedJson[key].state.hex = col.hexString();
+      }
+    }
 
-        // todo: repsonse code checken anders lege array retrun
-        return callback( parsedJson );
-    } );
+    // todo: repsonse code checken anders lege array retrun
+    return callback(parsedJson);
+  });
 
-    io.on( "connection", (socket) => {
-        socket.on( "update-hue", function( message ){
-            if( message.hueBody.hex ) {
-                var col = color( message.hueBody.hex );
+  eventService.on('connection', (socket) => {
+    eventService.on('hue.update', (message) => {
+      console.log('hue.update');
+      if(message.hueBody.hex) {
+        const col = color(message.hueBody.hex);
 
-                message.hueBody.hue = col.hue() * 182;
-                message.hueBody.bri = Math.round( col.lightness() / 100 * 255 );
-                message.hueBody.sat = Math.round( col.saturationv() / 100 * 255 );
-            }
+        message.hueBody.hue = col.hue() * 182;
+        message.hueBody.bri = Math.round(col.lightness() / 100 * 255);
+        message.hueBody.sat = Math.round(col.saturationv() / 100 * 255);
+      }
 
-            var options = {
-                url: "http://" + process.env.HUE_HOST + "/api/" + process.env.HUE_USER + "/lights/" + message.lightId + '/state',
-                method: "PUT",
-                body: JSON.stringify( message.hueBody )
-            };
+      const options = {
+        url: 'http://' + process.env.HUE_HOST + '/api/' + process.env.HUE_USER + '/lights/' + message.lightId + '/state',
+        method: 'PUT',
+        body: JSON.stringify(message.hueBody),
+      };
 
-            return request( options, function( error, response, returnBody ) {
-
-                console.log( returnBody );
-
-            } );
-        });
+      return request(options, (error, response, returnBody) => {
+        console.log(returnBody);
+      });
     });
+  });
+};
 
-}
+const Hue = (req, res) => {
+  getLamps((lightCollection) => {
+    res.render('index', {
+      title: 'Hue lampen',
+      lampCollection: lightCollection,
+    });
+  });
+};
 
 module.exports = Hue;
