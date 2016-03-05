@@ -1,17 +1,19 @@
-$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+// Bootstrap customize
+$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
+
+@import 'node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 
 body {
-    background: rgb(187, 187, 193);
-    color: #26284E;
+  background: rgb(187, 187, 193);
+  color: #26284e;
 }
 
 .l-header {
-    text-transform: uppercase;
-    font-size: 40px;
+  font-size: 40px;
+  text-transform: uppercase;
 }
 
-input[type='color'] {
-    width: 100%;
-    height: 100px;
+[type='color'] {
+  width: 100%;
+  height: 100px;
 }
