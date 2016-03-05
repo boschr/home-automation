@@ -2,12 +2,16 @@ $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 
 body {
-    background: #333333;
-    color: white;
+    background: rgb(187, 187, 193);
+    color: #26284E;
 }
 
 .l-header {
-    text-align: center;
     text-transform: uppercase;
     font-size: 40px;
+}
+
+input[type='color'] {
+    width: 100%;
+    height: 100px;
 }
